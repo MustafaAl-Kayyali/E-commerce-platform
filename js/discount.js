@@ -1,7 +1,6 @@
-
 window.onload = function () {
-    products = JSON.parse(localStorage.getItem("products")) || [];
     const select = document.getElementById("productSelect");
+    const products = JSON.parse(localStorage.getItem("products")) || [];
 
     products.forEach((product, index) => {
         const option = document.createElement("option");
@@ -16,56 +15,25 @@ window.onload = function () {
     });
 };
 
-
+// إضافة الخصم
 function applyDiscount() {
-    const select = document.getElementById("productSelect");
-    const selectedIndex = parseInt(select.value);
-    const discountInput = document.getElementById("discount");
-    const startDateInput = document.getElementById("startDate");
-    const endDateInput = document.getElementById("endDate");
+    const index = document.getElementById("productSelect").value;
+    const discount = parseFloat(document.getElementById("discount").value);
+    const startDate = document.getElementById("startDate").value;
+    const endDate = document.getElementById("endDate").value;
 
-    if (isNaN(selectedIndex) || selectedIndex < 0 || selectedIndex >= products.length) {
-        alert("Please select a valid product.");
-        return;
+    let products = JSON.parse(localStorage.getItem("products")) || [];
+
+    if (!products[index].originalPrice) {
+        products[index].originalPrice = parseFloat(products[index].price);  
     }
 
-    const discountPercentage = parseFloat(discountInput.value);
-    if (isNaN(discountPercentage) || discountPercentage < 0 || discountPercentage > 100) {
-        alert("Please enter a valid discount percentage (0–100).");
-        return;
-    }
-
-    const startDate = new Date(startDateInput.value);
-    const endDate = new Date(endDateInput.value);
-
-    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-        alert("Please enter valid start and end dates.");
-        return;
-    }
-
-    if (startDate >= endDate) {
-        alert("End date must be after start date.");
-        return;
-    }
-
-    const product = products[selectedIndex];
-
-    if (!product.originalPrice) {
-        product.originalPrice = product.price;
-    }
-
-    product.discount = {
-        percentage: discountPercentage,
-        start: startDate.toISOString(),
-        end: endDate.toISOString()
+    products[index].discount = {
+        percentage: discount,
+        startDate,
+        endDate
     };
 
     localStorage.setItem("products", JSON.stringify(products));
-
-    alert(`Discount of ${discountPercentage}% applied to "${product.name}" from ${startDate.toLocaleString()} to ${endDate.toLocaleString()}.`);
-
-    discountInput.value = "";
-    startDateInput.value = "";
-    endDateInput.value = "";
-    select.value = "";
+    alert("Discount applied successfully!");
 }

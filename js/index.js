@@ -56,7 +56,8 @@ window.onload = function () {
                         new Date() <= new Date(product.discount.end)
                             ? `<span style="text-decoration: line-through; color: gray;">$${parseFloat(product.originalPrice).toFixed(2)}</span> 
                                <span style="color: red; font-weight: bold;"> $${getCurrentProductPrice(product)}</span> 
-                               <small style="color: green;">(${product.discount.percentage}% off)</small>`
+                               <small style="color: green;">
+                               (${product.discount.percentage}% off)</small>`
                             : `$${parseFloat(product.originalPrice || product.price).toFixed(2) && parseFloat(product.price).toFixed(2)}
                             `
                     }

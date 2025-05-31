@@ -8,22 +8,28 @@ document.addEventListener("DOMContentLoaded", function () {
     setupLogoutButton();
 });
 
-let accounts = JSON.parse(localStorage.getItem('accounts')) || [
-    {
-        email: 'mustafa@example.com',
-        password: '1234',
-        name: 'Mustafa',
-        role: 'Admin',
-        status: 'Active'
-    },
-    {
-        email: 'abed@gmail.com',
-        password: '4321',
-        name: 'Abed',
-        role: 'User',
-        status: 'Active'
-    }
-];
+if (!localStorage.getItem('accounts')) {
+    const defaultAccounts = [
+        {
+            email: 'mustafa@example.com',
+            password: '1234',
+            name: 'Mustafa',
+            role: 'Admin',
+            status: 'Active'
+        },
+        {
+            email: 'abed@gmail.com',
+            password: '4321',
+            name: 'Abed',
+            role: 'User',
+            status: 'Active'
+        }
+    ];
+    localStorage.setItem('accounts', JSON.stringify(defaultAccounts));
+}
+
+let accounts = JSON.parse(localStorage.getItem('accounts'));
+
 
 function login(event) {
     event.preventDefault();

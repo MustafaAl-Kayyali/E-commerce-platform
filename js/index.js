@@ -44,7 +44,7 @@ window.onload = function () {
                 <p>${product.description}</p>
                 <div>
                     <button id="minus-${idx}" onclick="quantityMinus(${idx})" disabled>-</button>
-                    <span class="quantity" id="quantity-${idx}">0</span>
+                    <span class="quantity" id="quantity-${idx}">1</span>
                     <button id="plus-${idx}" onclick="quantityPlus(${idx})">+</button>
                 </div>
                 <p class="price">
@@ -57,7 +57,8 @@ window.onload = function () {
                             ? `<span style="text-decoration: line-through; color: gray;">$${parseFloat(product.originalPrice).toFixed(2)}</span> 
                                <span style="color: red; font-weight: bold;"> $${getCurrentProductPrice(product)}</span> 
                                <small style="color: green;">(${product.discount.percentage}% off)</small>`
-                            : `$${parseFloat(product.originalPrice || product.price).toFixed(2)}`
+                            : `$${parseFloat(product.originalPrice || product.price).toFixed(2) && parseFloat(product.price).toFixed(2)}
+                            `
                     }
                 </p>
                 <button onclick="addToCart(${idx})">Add to Cart</button>
@@ -70,7 +71,6 @@ window.onload = function () {
     function filterAndSort() {
         let filteredProducts = products.map((product, idx) => ({ product, idx }));
 
-        // بحث حسب قيمة المدخل (input)
         if (searchInput && searchInput.value.trim() !== "") {
             const query = searchInput.value.trim().toLowerCase();
             filteredProducts = filteredProducts.filter(({ product }) =>
@@ -106,7 +106,6 @@ window.onload = function () {
 
     renderProducts(products.map((product, idx) => ({ product, idx })));
 
-    // استماع للزر (button) لتنفيذ البحث والفرز عند الضغط
     if (searchBtn) {
         searchBtn.addEventListener("click", function (e) {
             e.preventDefault();
@@ -114,13 +113,11 @@ window.onload = function () {
         });
     }
 
-    // استماع لتغيير قيمة الفرز مباشرة
     if (sortBy) {
         sortBy.addEventListener("change", filterAndSort);
     }
 };
 
-// دوال إدارة الكميات والإضافة للسلة
 function updateButtonStates(index, currentQuantity, maxQuantity) {
     const minusBtn = document.getElementById(`minus-${index}`);
     const plusBtn = document.getElementById(`plus-${index}`);
@@ -133,8 +130,7 @@ function quantityPlus(index) {
     const products = JSON.parse(localStorage.getItem("products")) || [];
     const quantityElement = document.getElementById(`quantity-${index}`);
     let currentQuantity = parseInt(quantityElement.textContent) || 0;
-
-    const maxQuantity = products[index]?.quantity || 0;
+    const maxQuantity = products[index]?.quantity || 1;
 
     if (currentQuantity < maxQuantity) {
         currentQuantity += 1;
@@ -147,10 +143,14 @@ function quantityPlus(index) {
 function quantityMinus(index) {
     const products = JSON.parse(localStorage.getItem("products")) || [];
     const quantityElement = document.getElementById(`quantity-${index}`);
-    let currentQuantity = parseInt(quantityElement.textContent) || 0;
+    let currentQuantity = parseInt(quantityElement.textContent) || 1;
 
-    if (currentQuantity > 0) {
+    if (currentQuantity >= 1) {
         currentQuantity -= 1;
+        quantityElement.textContent = currentQuantity;
+    }
+    else {
+        currentQuantity = 0;
         quantityElement.textContent = currentQuantity;
     }
 
@@ -169,7 +169,6 @@ function addToCart(index) {
     }
 
     const maxQuantity = products[index]?.quantity || 0;
-
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
     const existingItem = cart.find(item => item.productId === index);
@@ -189,24 +188,7 @@ function addToCart(index) {
     localStorage.setItem("cart", JSON.stringify(cart));
     alert(`Added ${quantity} item(s) of product "${products[index]?.name}" to the cart.`);
     quantityElement.textContent = 0;
-
     updateButtonStates(index, 0, maxQuantity);
-}
-function getCurrentProductPrice(product) {
-    const now = new Date();
-
-    if (
-        product.discount &&
-        product.discount.start &&
-        product.discount.end &&
-        new Date(product.discount.start) <= now &&
-        now <= new Date(product.discount.end)
-    ) {
-        const discountedPrice = product.originalPrice - (product.originalPrice * product.discount.percentage / 100);
-        return parseFloat(discountedPrice).toFixed(2);
-    }
-
-    return parseFloat(product.originalPrice || product.price).toFixed(2);
 }
 
 function renderProduct(product) {
@@ -241,3 +223,9 @@ function renderProduct(product) {
         </div>
     `;
 }
+function updateProduct(){
+    prodects = JSON.parse(localStorage.getItem("products")) || [];
+    products[0].price = parseFloat(products[0].price).toFixed(2);
+    console.log(products[0].price);
+}
+   

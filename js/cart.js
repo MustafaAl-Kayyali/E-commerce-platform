@@ -40,8 +40,9 @@ window.addEventListener('DOMContentLoaded', function () {
                 <p>Price: $${itemPrice.toFixed(2)}</p>
                 <p>Quantity: ${itemQuantity}</p>
                 <p>Total: $${itemTotal.toFixed(2)}</p>
-                <button class="btn btn-danger remove-btn" data-index="${index}" style="margin-top: 10px;     border-radius: 4px;  color: white; border: none; padding: 10 font-size: 14px; display: flex; align-items: center; justify-content: center;"
-" >
+                <button class="btn btn-danger remove-btn" data-index="${index}" style="margin-top: 10px; 
+                border-radius: 4px;  color: white; border: none; padding: 10 font-size: 14px; display: flex; align-items: center; justify-content: center;"
+                " >
                     <i class="fas fa-trash"></i> Remove
                 </button>
             </div>
@@ -53,14 +54,13 @@ window.addEventListener('DOMContentLoaded', function () {
     subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
     totalElement.textContent = `$${subtotal.toFixed(2)}`;
 
-    // ✅ التعامل مع زر الحذف
     const removeButtons = document.querySelectorAll('.remove-btn');
     removeButtons.forEach(button => {
         button.addEventListener('click', function () {
             const index = parseInt(this.getAttribute('data-index'));
-            cart.splice(index, 1); // احذف العنصر
-            localStorage.setItem("cart", JSON.stringify(cart)); // تحديث التخزين
-            location.reload(); // إعادة تحميل الصفحة لتحديث العرض
+            cart.splice(index, 1); 
+            localStorage.setItem("cart", JSON.stringify(cart));
+            location.reload();
         });
     });
 });

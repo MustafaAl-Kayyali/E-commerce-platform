@@ -157,9 +157,15 @@ function quantityMinus(index) {
     const maxQuantity = products[index]?.quantity || 0;
     updateButtonStates(index, currentQuantity, maxQuantity);
 }
-
 function addToCart(index) {
-     const products = JSON.parse(localStorage.getItem("products")) || [];
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    if (!loggedInUser) {
+        alert("You must be logged in to add items to the cart.");
+        window.location.href = "/html/Login.html"; 
+        return;
+    }
+
+    const products = JSON.parse(localStorage.getItem("products")) || [];
     const quantityElement = document.getElementById(`quantity-${index}`);
     let currentQuantity = parseInt(quantityElement.textContent) || 0;
     const product = products[index];
@@ -172,7 +178,7 @@ function addToCart(index) {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     const existingItemIndex = cart.findIndex(item => item.name === product.name);
 
-    const price = parseFloat(product.price); // ← تأكد أن السعر رقم
+    const price = parseFloat(product.price); 
 
     if (isNaN(price)) {
         alert("Product price is invalid.");
@@ -183,10 +189,10 @@ function addToCart(index) {
         cart[existingItemIndex].quantity += currentQuantity;
     } else {
         cart.push({
-            img: product.image,
+            image: product.image,
             name: product.name,
             description: product.description,
-            price: price, // ← تأكد أنه رقم
+            price: price, 
             quantity: currentQuantity
         });
     }
@@ -196,6 +202,7 @@ function addToCart(index) {
     quantityElement.textContent = "0";
     updateButtonStates(index, 0, product.quantity || 0);
 }
+
 
 function renderProduct(product) {
     const now = new Date();

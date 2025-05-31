@@ -242,4 +242,5 @@ function updateProduct(){
     products[0].price = parseFloat(products[0].price).toFixed(2);
     console.log(products[0].price);
 }
-   
+//localStorage.setItem("products", JSON.stringify([]));
+

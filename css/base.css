@@ -23,7 +23,7 @@ a {
 }
 
 .site-header {
-    background: #FF7B00;
+    background: #0044ff;
     color: white;
     padding: 15px 0;
 }
@@ -42,11 +42,11 @@ a {
 }
 
 .btn-danger {
-    background: #e74c3c;
+    background: #0044ff;
     color: white;
 }
 #main-header {
-    background: linear-gradient(135deg, #FF7B00 0%, 100%);
+    background: linear-gradient(135deg, #0044ff 0%, 100%);
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     position: sticky;
     top: 0;
@@ -79,7 +79,7 @@ a {
 }
 
 #main-header nav a:hover {
-    background: #FF7B00;
+    background: #0044ff;
     transform: translateY(-2px);
 }
 
@@ -309,7 +309,7 @@ a {
 }
 
 #footer {
-     background: #FF7B00;
+     background: #0051ff;
     color: white;
     padding: 20px 0;
     text-align: center;

@@ -5,7 +5,7 @@ body {
 }
 
 #main-header {
-    background: #FF7B00;
+    background: #0044ff;
     padding: 15px 0;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
@@ -41,7 +41,7 @@ body {
 }
 
 .search-button {
-    background: #FF7B00;
+    background: #0044ff;
     color: white;
     padding: 10px 20px;
     border: none;

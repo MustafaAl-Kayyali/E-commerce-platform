@@ -15,7 +15,6 @@ window.onload = function () {
     });
 };
 
-// إضافة الخصم
 function applyDiscount() {
     const index = document.getElementById("productSelect").value;
     const discount = parseFloat(document.getElementById("discount").value);
@@ -30,8 +29,8 @@ function applyDiscount() {
 
     products[index].discount = {
         percentage: discount,
-        startDate,
-        endDate
+        start :startDate,
+        end: endDate
     };
 
     localStorage.setItem("products", JSON.stringify(products));

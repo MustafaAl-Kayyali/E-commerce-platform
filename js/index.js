@@ -27,7 +27,6 @@ window.onload = function () {
         return parseFloat(product.originalPrice || product.price).toFixed(2);
     }
 
-    // مصفوفة من الكائنات: { product, idx }
     function renderProducts(filteredProductsWithIndex) {
         productList.innerHTML = "";
 
@@ -80,7 +79,6 @@ window.onload = function () {
             );
         }
 
-        // الفرز حسب القيمة المختارة في select
         if (sortBy) {
             switch (sortBy.value) {
                 case "name-asc":

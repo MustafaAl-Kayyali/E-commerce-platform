@@ -159,36 +159,42 @@ function quantityMinus(index) {
 }
 
 function addToCart(index) {
-    const products = JSON.parse(localStorage.getItem("products")) || [];
+     const products = JSON.parse(localStorage.getItem("products")) || [];
     const quantityElement = document.getElementById(`quantity-${index}`);
-    const quantity = parseInt(quantityElement.textContent) || 0;
+    let currentQuantity = parseInt(quantityElement.textContent) || 0;
+    const product = products[index];
 
-    if (quantity <= 0) {
-        alert("Please select a quantity greater than 0.");
+    if (!product || currentQuantity <= 0) {
+        alert("Please select a valid quantity.");
         return;
     }
 
-    const maxQuantity = products[index]?.quantity || 0;
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const existingItemIndex = cart.findIndex(item => item.name === product.name);
 
-    const existingItem = cart.find(item => item.productId === index);
-    const totalInCart = existingItem ? existingItem.quantity + quantity : quantity;
+    const price = parseFloat(product.price); // ← تأكد أن السعر رقم
 
-    if (totalInCart > maxQuantity) {
-        alert(`Only ${maxQuantity - (existingItem?.quantity || 0)} item(s) remaining for this product.`);
+    if (isNaN(price)) {
+        alert("Product price is invalid.");
         return;
     }
 
-    if (existingItem) {
-        existingItem.quantity += quantity;
+    if (existingItemIndex > -1) {
+        cart[existingItemIndex].quantity += currentQuantity;
     } else {
-        cart.push({ productId: index, quantity });
+        cart.push({
+            img: product.image,
+            name: product.name,
+            description: product.description,
+            price: price, // ← تأكد أنه رقم
+            quantity: currentQuantity
+        });
     }
 
     localStorage.setItem("cart", JSON.stringify(cart));
-    alert(`Added ${quantity} item(s) of product "${products[index]?.name}" to the cart.`);
-    quantityElement.textContent = 0;
-    updateButtonStates(index, 0, maxQuantity);
+    alert(`${product.name} has been added to your cart.`);
+    quantityElement.textContent = "0";
+    updateButtonStates(index, 0, product.quantity || 0);
 }
 
 function renderProduct(product) {

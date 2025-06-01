@@ -179,9 +179,25 @@ function addToCart(index) {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     const existingItemIndex = cart.findIndex(item => item.name === product.name);
 
-    const price = parseFloat(product.price); 
+    // Calculate the current price based on discount
+    const now = new Date();
+    let currentPrice;
+    if (
+        product.discount &&
+        product.discount.start &&
+        product.discount.end &&
+        new Date(product.discount.start) <= now &&
+        now <= new Date(product.discount.end)
+    ) {
+        // Apply discount
+        const discountedPrice = product.originalPrice - (product.originalPrice * product.discount.percentage / 100);
+        currentPrice = parseFloat(discountedPrice);
+    } else {
+        // Use original price
+        currentPrice = parseFloat(product.originalPrice || product.price);
+    }
 
-    if (isNaN(price)) {
+    if (isNaN(currentPrice)) {
         alert("Product price is invalid.");
         return;
     }
@@ -193,7 +209,13 @@ function addToCart(index) {
             image: product.image,
             name: product.name,
             description: product.description,
-            price: price, 
+            price: currentPrice,
+            originalPrice: parseFloat(product.originalPrice || product.price),
+            discountInfo: product.discount ? {
+                percentage: product.discount.percentage,
+                start: product.discount.start,
+                end: product.discount.end
+            } : null,
             quantity: currentQuantity
         });
     }

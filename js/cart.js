@@ -21,7 +21,23 @@ window.addEventListener('DOMContentLoaded', function () {
     let subtotal = 0;
 
     cart.forEach((item, index) => {
-        const itemPrice = parseFloat(item.price);
+        const now = new Date();
+        let currentPrice = item.price;
+        
+        // Check if discount is still valid
+        if (item.discountInfo && 
+            new Date(item.discountInfo.start) <= now && 
+            now <= new Date(item.discountInfo.end)) {
+            currentPrice = item.price; // Use stored discounted price
+        } else if (item.discountInfo) {
+            // Discount has expired, use original price
+            currentPrice = item.originalPrice;
+            // Update the item's price in cart
+            cart[index].price = item.originalPrice;
+            localStorage.setItem("cart", JSON.stringify(cart));
+        }
+
+        const itemPrice = parseFloat(currentPrice);
         const itemQuantity = parseInt(item.quantity);
         const itemTotal = itemPrice * itemQuantity;
 
@@ -30,19 +46,31 @@ window.addEventListener('DOMContentLoaded', function () {
 
         const itemElement = document.createElement("div");
         itemElement.className = "cart-item";
+        
+        let priceDisplay = `<p>Price: $${itemPrice.toFixed(2)}</p>`;
+        if (item.discountInfo && 
+            new Date(item.discountInfo.start) <= now && 
+            now <= new Date(item.discountInfo.end)) {
+            priceDisplay = `
+                <p>
+                    <span style="text-decoration: line-through; color: gray;">$${item.originalPrice.toFixed(2)}</span>
+                    <span style="color: red; font-weight: bold;">$${itemPrice.toFixed(2)}</span>
+                    <small style="color: green;">(${item.discountInfo.percentage}% off)</small>
+                </p>`;
+        }
+
         itemElement.innerHTML = `
             <div class="item-image">
-                <img src="${item.img}" alt="${item.name}" />
+                <img src="${item.image || item.img}" alt="${item.name}" />
             </div>
             <div class="item-details">
                 <h4>${item.name}</h4>
                 <p>${item.description}</p>
-                <p>Price: $${itemPrice.toFixed(2)}</p>
+                ${priceDisplay}
                 <p>Quantity: ${itemQuantity}</p>
                 <p>Total: $${itemTotal.toFixed(2)}</p>
                 <button class="btn btn-danger remove-btn" data-index="${index}" style="margin-top: 10px; 
-                border-radius: 4px;  color: white; border: none; padding: 10 font-size: 14px; display: flex; align-items: center; justify-content: center;"
-                " >
+                border-radius: 4px; color: white; border: none; padding: 10px; font-size: 14px; display: flex; align-items: center; justify-content: center;">
                     <i class="fas fa-trash"></i> Remove
                 </button>
             </div>

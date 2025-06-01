@@ -243,4 +243,3 @@ function updateProduct(){
     console.log(products[0].price);
 }
 //localStorage.setItem("products", JSON.stringify([]));
-

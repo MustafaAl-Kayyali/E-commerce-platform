@@ -151,6 +151,13 @@
     }
 
     function addToCart(index) {
+      const loggedInUser = localStorage.getItem("loggedInUser");
+      if (!loggedInUser) {
+          alert("You must be logged in to add items to the cart.");
+          window.location.href = "/html/Login.html"; 
+          return;
+      }
+
       const products = JSON.parse(localStorage.getItem("products")) || [];
       const quantityElement = document.getElementById(`quantity-${index}`);
       let currentQuantity = parseInt(quantityElement.textContent) || 0;

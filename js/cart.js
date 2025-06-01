@@ -30,16 +30,14 @@ window.addEventListener('DOMContentLoaded', function () {
     cart.forEach((item, index) => {
         const now = new Date();
         let currentPrice = item.price;
-        
-        // Check if discount is still valid
+        //this is for the discount
         if (item.discountInfo && 
             new Date(item.discountInfo.start) <= now && 
             now <= new Date(item.discountInfo.end)) {
-            currentPrice = item.price; // Use stored discounted price
+            currentPrice = item.price; 
+            //this is for the discount 
         } else if (item.discountInfo) {
-            // Discount has expired, use original price
             currentPrice = item.originalPrice;
-            // Update the item's price in cart
             cart[index].price = item.originalPrice;
             localStorage.setItem("cart", JSON.stringify(cart));
         }

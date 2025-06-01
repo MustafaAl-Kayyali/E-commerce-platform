@@ -1,3 +1,4 @@
+//to load the page and get the products and render them
 window.onload = function () {
     const select = document.getElementById("productSelect");
     const products = JSON.parse(localStorage.getItem("products")) || [];
@@ -8,7 +9,7 @@ window.onload = function () {
         option.textContent = product.name;
         select.appendChild(option);
     });
-
+//to change the product
     select.addEventListener("change", function () {
         const selectedIndex = parseInt(this.value);
 
@@ -25,7 +26,7 @@ window.onload = function () {
             clearForm();
         }
     });
-
+//to add the image
     document.getElementById("UproductImage").addEventListener("change", function (event) {
         const file = event.target.files[0];
         if (!file) return;
@@ -43,7 +44,7 @@ window.onload = function () {
         };
         reader.readAsDataURL(file);
     });
-
+//to update the product
     document.getElementById("discountForm").addEventListener("submit", function (e) {
         e.preventDefault();
 
@@ -96,7 +97,7 @@ window.onload = function () {
         refreshProductSelect();
     });
 };
-
+//to clear the form
 function clearForm() {
     document.getElementById("productSelect").value = "";
     document.getElementById("Uname").value = "";
@@ -107,7 +108,7 @@ function clearForm() {
     document.getElementById("imagePreview").src = "";
     imageBase64 = "";
 }
-
+//to refresh the product select
 function refreshProductSelect() {
     const select = document.getElementById("productSelect");
     select.innerHTML = '<option value="">-- Select a Product --</option>';

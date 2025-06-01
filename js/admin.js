@@ -1,10 +1,10 @@
 let products = [];
 let imageBase64 = "";
-
+//to load the page and get the products
 window.onload = () => {
     products = JSON.parse(localStorage.getItem("products")) || [];
 };
-
+//to add the image
 document.getElementById("productImage").addEventListener("change", function (event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -22,8 +22,8 @@ document.getElementById("productImage").addEventListener("change", function (eve
     };
     reader.readAsDataURL(file);
 });
-
-document.getElementById("productForm").addEventListener("submit", function (e) {
+//to add the product
+    document.getElementById("productForm").addEventListener("submit", function (e) {
     e.preventDefault(); 
 
     const name = document.getElementById("name").value.trim();
@@ -65,7 +65,7 @@ document.getElementById("productForm").addEventListener("submit", function (e) {
     alert("Product added successfully!");
     clearForm();
 });
-
+//to clear the form
 function clearForm() {
     document.getElementById("name").value = "";
     document.getElementById("description").value = "";

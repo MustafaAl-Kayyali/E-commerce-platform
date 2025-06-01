@@ -1,3 +1,4 @@
+//to load the page and get the products
 window.onload = function () {
     const select = document.getElementById("productSelect");
     const products = JSON.parse(localStorage.getItem("products")) || [];
@@ -14,7 +15,7 @@ window.onload = function () {
         applyDiscount();
     });
 };
-
+//to apply the discount
 function applyDiscount() {
     const index = document.getElementById("productSelect").value;
     const discount = parseFloat(document.getElementById("discount").value);

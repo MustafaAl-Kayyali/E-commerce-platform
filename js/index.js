@@ -9,7 +9,7 @@ window.onload = function () {
         console.error("No element with id 'product-list' found.");
         return;
     }
-
+//to get the current price
     function getCurrentProductPrice(product) {
         const now = new Date();
 
@@ -26,7 +26,7 @@ window.onload = function () {
 
         return parseFloat(product.originalPrice || product.price).toFixed(2);
     }
-
+//to render the products
     function renderProducts(filteredProductsWithIndex) {
         productList.innerHTML = "";
 
@@ -68,7 +68,7 @@ window.onload = function () {
             updateButtonStates(idx, 0, product.quantity || 0);
         });
     }
-
+//to filter the search and sort
     function filterAndSort() {
         let filteredProducts = products.map((product, idx) => ({ product, idx }));
 
@@ -118,7 +118,7 @@ window.onload = function () {
         sortBy.addEventListener("change", filterAndSort);
     }
 };
-
+//to update the button states
 function updateButtonStates(index, currentQuantity, maxQuantity) {
     const minusBtn = document.getElementById(`minus-${index}`);
     const plusBtn = document.getElementById(`plus-${index}`);
@@ -126,7 +126,7 @@ function updateButtonStates(index, currentQuantity, maxQuantity) {
     if (minusBtn) minusBtn.disabled = currentQuantity <= 0;
     if (plusBtn) plusBtn.disabled = currentQuantity >= maxQuantity;
 }
-
+//to quantity plus
 function quantityPlus(index) {
     const products = JSON.parse(localStorage.getItem("products")) || [];
     const quantityElement = document.getElementById(`quantity-${index}`);
@@ -140,7 +140,7 @@ function quantityPlus(index) {
 
     updateButtonStates(index, currentQuantity, maxQuantity);
 }
-
+//to quantity minus
 function quantityMinus(index) {
     const products = JSON.parse(localStorage.getItem("products")) || [];
     const quantityElement = document.getElementById(`quantity-${index}`);
@@ -158,6 +158,7 @@ function quantityMinus(index) {
     const maxQuantity = products[index]?.quantity || 0;
     updateButtonStates(index, currentQuantity, maxQuantity);
 }
+//to add to the cart
 function addToCart(index) {
     const loggedInUser = localStorage.getItem("loggedInUser");
     if (!loggedInUser) {
@@ -179,7 +180,7 @@ function addToCart(index) {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     const existingItemIndex = cart.findIndex(item => item.name === product.name);
 
-    // Calculate the current price based on discount
+//to get the current price
     const now = new Date();
     let currentPrice;
     if (
@@ -187,13 +188,12 @@ function addToCart(index) {
         product.discount.start &&
         product.discount.end &&
         new Date(product.discount.start) <= now &&
-        now <= new Date(product.discount.end)
-    ) {
-        // Apply discount
-        const discountedPrice = product.originalPrice - (product.originalPrice * product.discount.percentage / 100);
+        now <= new Date(product.discount.end)) {
+//to get the discounted price
+            const discountedPrice = product.originalPrice - (product.originalPrice * product.discount.percentage / 100);
         currentPrice = parseFloat(discountedPrice);
     } else {
-        // Use original price
+//to get the original price
         currentPrice = parseFloat(product.originalPrice || product.price);
     }
 
@@ -226,7 +226,7 @@ function addToCart(index) {
     updateButtonStates(index, 0, product.quantity || 0);
 }
 
-
+//to render the product
 function renderProduct(product) {
     const now = new Date();
     let priceHTML = "";
@@ -259,6 +259,7 @@ function renderProduct(product) {
         </div>
     `;
 }
+//to update the product
 function updateProduct(){
     prodects = JSON.parse(localStorage.getItem("products")) || [];
     products[0].price = parseFloat(products[0].price).toFixed(2);

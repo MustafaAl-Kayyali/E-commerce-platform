@@ -12,8 +12,7 @@
           product.discount.start &&
           product.discount.end &&
           new Date(product.discount.start) <= now &&
-          now <= new Date(product.discount.end)
-        ) {
+          now <= new Date(product.discount.end) ) {
           const discountedPrice = product.originalPrice - (product.originalPrice * product.discount.percentage / 100);
           return parseFloat(discountedPrice).toFixed(2);
         }
@@ -113,7 +112,7 @@
         sortBy.addEventListener("change", filterAndSort);
       }
     }
-
+//to update the button states
     function updateButtonStates(index, currentQuantity, maxQuantity) {
       const minusBtn = document.getElementById(`minus-${index}`);
       const plusBtn = document.getElementById(`plus-${index}`);
@@ -121,7 +120,7 @@
       if (minusBtn) minusBtn.disabled = currentQuantity <= 0;
       if (plusBtn) plusBtn.disabled = currentQuantity >= maxQuantity;
     }
-
+//to quantity plus
     function quantityPlus(index) {
       const products = JSON.parse(localStorage.getItem("products")) || [];
       const quantityElement = document.getElementById(`quantity-${index}`);
@@ -135,7 +134,7 @@
 
       updateButtonStates(index, currentQuantity, maxQuantity);
     }
-
+//to quantity minus
     function quantityMinus(index) {
       const products = JSON.parse(localStorage.getItem("products")) || [];
       const quantityElement = document.getElementById(`quantity-${index}`);
@@ -149,7 +148,7 @@
       const maxQuantity = products[index]?.quantity || 0;
       updateButtonStates(index, currentQuantity, maxQuantity);
     }
-
+//to add to the cart
     function addToCart(index) {
       const loggedInUser = localStorage.getItem("loggedInUser");
       if (!loggedInUser) {
@@ -171,7 +170,7 @@
       const cart = JSON.parse(localStorage.getItem("cart")) || [];
       const existingItemIndex = cart.findIndex(item => item.name === product.name);
 
-      // Calculate the current price based on discount
+//to get the current price
       const now = new Date();
       let currentPrice;
       if (
@@ -181,11 +180,11 @@
           new Date(product.discount.start) <= now &&
           now <= new Date(product.discount.end)
       ) {
-          // Apply discount
+          //to get the discounted price
           const discountedPrice = product.originalPrice - (product.originalPrice * product.discount.percentage / 100);
           currentPrice = parseFloat(discountedPrice);
       } else {
-          // Use original price
+          //to get the original price
           currentPrice = parseFloat(product.originalPrice || product.price);
       }
 

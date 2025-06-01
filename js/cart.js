@@ -1,3 +1,4 @@
+//to load the page and get the cart
 window.addEventListener('DOMContentLoaded', function () {
     const loggedInUser = localStorage.getItem("loggedInUser");
     if (!loggedInUser) {

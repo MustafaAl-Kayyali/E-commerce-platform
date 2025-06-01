@@ -1,4 +1,11 @@
 window.addEventListener('DOMContentLoaded', function () {
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    if (!loggedInUser) {
+        alert("You must be logged in to view your cart.");
+        window.location.href = "/html/Login.html";
+        return;
+    }
+
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     const cartItemsContainer = document.getElementById("cartItems");
     const emptyCart = document.getElementById("emptyCart");
